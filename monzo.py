@@ -23,6 +23,18 @@ def getTransactions():
     resp = call('https://api.monzo.com/transactions', {'account_id': getAccountDetails()[2]})
     return resp
 
+def calcCosts():
+    mIn = 0
+    mOut = 0
+    for val in getTransactions()["transactions"]:
+        cValue = val["amount"]
+        if (cValue < 0):
+            mOut += (cValue * -1)
+        else:
+            mIn += cValue
+
+    return("Total In: " + str(mIn) + "\nTotal Out: " + str(mOut) + "\nNet: " + str(mIn - mOut))
+
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
         acc = getAccountDetails()
@@ -33,5 +45,11 @@ if(len(sys.argv) > 1):
         print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
     elif(sys.argv[1] == "transactions"):
         print(getTransactions())
+
+    elif(sys.argv[1] == "spent"):
+        print(calcCosts())
+
+
+
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
