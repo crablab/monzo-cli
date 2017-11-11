@@ -28,7 +28,6 @@ def calcCosts():
     mOut = 0.0
     for val in getTransactions()["transactions"]:
         cValue = val["amount"]
-        total += cValue
         if (cValue < 0):
             mOut += (cValue * -1)
         else:
@@ -81,5 +80,5 @@ if(len(sys.argv) > 1):
                     if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
                         print(formatTransaction(arr[i])+"\n-------------------")
 
-else:
-    print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
+    else:
+        print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance\ntransactions: list all transactions \nspent: display total input and output\npending: show all transactions that have not been settled")
