@@ -36,12 +36,12 @@ def calcCosts():
     return("Total In: " + str(mIn) + "\nTotal Out: " + str(mOut) + "\nNet: " + str(mIn - mOut))
 
 def formatTransaction(transaction):
-    return ("Description: " + transaction['description']
+    return (("Description: " + transaction['description']
             +"\nAmount: " + babel.numbers.format_currency(decimal.Decimal(transaction['amount']/100), 'GBP')
             +"\nDate: " + transaction['created']
             +"\nCurrency: " + transaction['currency']
             +"\nTransaction ID: " + transaction['id']
-            +"\nNotes: " + transaction['notes'])
+            +"\nNotes: " + transaction['notes'])).encode('utf-8')
 
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
@@ -53,6 +53,8 @@ if(len(sys.argv) > 1):
     elif(sys.argv[1] == "transactions"):
         for val in getTransactions()['transactions']:
             print(formatTransaction(val)+"\n-------------------")
+    elif(sys.argv[1] == "transactions-raw"):
+        print(getTransactions())
     elif(sys.argv[1] == "spent"):
         print(calcCosts())
     elif(sys.argv[1] == "pending"):
@@ -60,6 +62,5 @@ if(len(sys.argv) > 1):
         for i in range(len(arr)):
             if(arr[i]['settled'] == ''):
                 print(formatTransaction(arr[i]))
-
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
