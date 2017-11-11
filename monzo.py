@@ -19,12 +19,13 @@ def getBalance():
     resp = call('https://api.monzo.com/balance', {'account_id': getAccountDetails()[2]})
     return [(-1 * resp['spend_today']/100), resp['balance']/100]
 
-if(sys.argv[1] == "details"):
-    acc = getAccountDetails()
+if(len(sys.argv) > 1):
+    if(sys.argv[1] == "details"):
+        acc = getAccountDetails()
 
-    print("Account Holder: " + acc[3] + "\nAccount number: " + acc[0] + "\nSort code: " + acc[1]  + "\nBIC number: MONZGB21" + "\nBank address: 230 City Road, London EC1V 2QY")
-elif(sys.argv[1] == "balance"):
-    bal = getBalance()
-    print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
+        print("Account Holder: " + acc[3] + "\nAccount number: " + acc[0] + "\nSort code: " + acc[1]  + "\nBIC number: MONZGB21" + "\nBank address: 230 City Road, London EC1V 2QY")
+    elif(sys.argv[1] == "balance"):
+        bal = getBalance()
+        print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
 else:
-    print("Command not found. \n \n Try: \n details: list your account details")
+    print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
