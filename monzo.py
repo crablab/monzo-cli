@@ -51,16 +51,14 @@ if(len(sys.argv) > 1):
         bal = getBalance()
         print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
     elif(sys.argv[1] == "transactions"):
-        print(getTransactions())
-
-    elif(sys.argv[1] == "spent"):
         for val in getTransactions()['transactions']:
             print(formatTransaction(val)+"\n-------------------")
+    elif(sys.argv[1] == "spent"):
+        print(calcCosts())
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
         for i in range(len(arr)):
             if(arr[i]['settled'] == ''):
                 print(formatTransaction(arr[i]))
-
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
