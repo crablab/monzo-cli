@@ -58,8 +58,8 @@ if(len(sys.argv) > 1):
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
         for i in range(len(arr)):
-            if(arr[i]['settled'] == ''):
-                print(formatTransaction(arr[i]))
+            if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
+                print(formatTransaction(arr[i])+"\n-------------------")
 
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
