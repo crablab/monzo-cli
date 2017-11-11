@@ -56,6 +56,7 @@ def filterTransaction(pendingBool):
                         print(formatTransaction(arr[currentTransaction]) + "\n-------------------")
 
 
+# Argument logic
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
         acc = getAccountDetails()
