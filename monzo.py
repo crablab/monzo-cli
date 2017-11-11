@@ -43,6 +43,14 @@ def formatTransaction(transaction):
             +"\nTransaction ID: " + transaction['id']
             +"\nNotes: " + transaction['notes'])
 
+def filterTransaction(transactionSet):
+    if(len(sys.argv) >2):
+        arr = getTransactions()["transactions"]
+        for val in range(len(arr)):
+                if(sys.argv[2] == "general"):
+                    print(formatTransaction(arr[val]) + "\n-------------------")
+
+
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
         acc = getAccountDetails()
@@ -51,8 +59,9 @@ if(len(sys.argv) > 1):
         bal = getBalance()
         print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
     elif(sys.argv[1] == "transactions"):
-        for val in getTransactions()['transactions']:
-            print(formatTransaction(val)+"\n-------------------")
+        #for val in getTransactions()['transactions']:
+        filterTransaction(getTransactions())
+        #    print(formatTransaction(val)+"\n-------------------")
     elif(sys.argv[1] == "spent"):
         print(calcCosts())
     elif(sys.argv[1] == "pending"):
