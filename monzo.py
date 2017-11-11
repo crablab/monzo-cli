@@ -43,6 +43,7 @@ def formatTransaction(transaction):
             +"\nTransaction ID: " + transaction['id']
             +"\nNotes: " + transaction['notes'])).encode('utf-8')
 
+# Argument handling
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
         acc = getAccountDetails()
