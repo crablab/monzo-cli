@@ -1,1 +1,1 @@
-python monzo.py
+python monzo.py "$@"
