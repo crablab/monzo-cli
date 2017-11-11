@@ -43,12 +43,18 @@ def formatTransaction(transaction):
             +"\nTransaction ID: " + transaction['id']
             +"\nNotes: " + transaction['notes'])
 
-def filterTransaction(transactionSet):
-    if(len(sys.argv) >2):
-        arr = getTransactions()["transactions"]
-        for val in range(len(arr)):
-                if(sys.argv[2] == "general"):
-                    print(formatTransaction(arr[val]) + "\n-------------------")
+def filterTransaction(pendingBool):
+    arr = getTransactions()["transactions"]
+    categories = ['general', 'eating_out', 'expenses', 'transport', 'cash', 'bills', 'entertainment', 'shopping', 'holidays', 'groceries']
+    categoriesShort = ['ge', 'eo', 'ex', 't', 'c', 'b', 'en', 's', 'h', 'gr']
+    for currentTransaction in range(len(arr)):
+            for i in range(len(categories)):
+                if(arr[currentTransaction]['category'] == categories[i] and (sys.argv[2] == categories[i] or sys.argv[2]== categoriesShort[i])):
+                    if(pendingBool):
+                        if(arr[currentTransaction]['settled'] == '' and arr[currentTransaction]['notes'] != 'Active card check'):
+                            print(formatTransaction(arr[currentTransaction])+"\n-------------------")
+                    else:
+                        print(formatTransaction(arr[currentTransaction]) + "\n-------------------")
 
 
 if(len(sys.argv) > 1):
@@ -59,16 +65,21 @@ if(len(sys.argv) > 1):
         bal = getBalance()
         print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
     elif(sys.argv[1] == "transactions"):
-        #for val in getTransactions()['transactions']:
-        filterTransaction(getTransactions())
-        #    print(formatTransaction(val)+"\n-------------------")
+        if(len(sys.argv) == 3):
+            filterTransaction(False)
+        else:
+            for val in getTransactions()['transactions']:
+                print(formatTransaction(val)+"\n-------------------")
     elif(sys.argv[1] == "spent"):
         print(calcCosts())
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
-        for i in range(len(arr)):
-            if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
-                print(formatTransaction(arr[i])+"\n-------------------")
+        if(len(sys.argv) ==3):
+            filterTransaction(True)
+        else:
+            for i in range(len(arr)):
+                    if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
+                        print(formatTransaction(arr[i])+"\n-------------------")
 
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
