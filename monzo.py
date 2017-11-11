@@ -81,4 +81,7 @@ if(len(sys.argv) > 1):
                         print(formatTransaction(arr[i])+"\n-------------------")
 
     else:
-        print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance\ntransactions: list all transactions \nspent: display total input and output\npending: show all transactions that have not been settled")
+        print("Command not found. \n \nTry: \ndetails: list your account details"+
+        "\nbalance: list your balance\ntransactions: list all transactions"+
+        "\nspent: display total input and output"+
+        "\npending: show all transactions that have not been settled")
