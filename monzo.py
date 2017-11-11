@@ -63,5 +63,5 @@ if(len(sys.argv) > 1):
         for i in range(len(arr)):
             if(arr[i]['settled'] == ''):
                 print(formatTransaction(arr[i]))
-else:
-    print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance\ntransactions: list all of your transactions")
+    else:
+        print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance\ntransactions: list all of your transactions")
