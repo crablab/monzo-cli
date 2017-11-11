@@ -23,6 +23,14 @@ def getTransactions():
     resp = call('https://api.monzo.com/transactions', {'account_id': getAccountDetails()[2]})
     return resp
 
+def formatTransaction(transaction):
+    return ("Description: " + transaction['description']
+            +"\nAmount: " + babel.numbers.format_currency(decimal.Decimal(transaction['amount']/100), 'GBP')
+            +"\nDate: " + transaction['created']
+            +"\nCurrency: " + transaction['currency']
+            +"\nTransaction ID: " + transaction['id']
+            +"\nNotes: " + transaction['notes'])
+
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
         acc = getAccountDetails()
@@ -32,11 +40,13 @@ if(len(sys.argv) > 1):
         bal = getBalance()
         print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
     elif(sys.argv[1] == "transactions"):
-        print(getTransactions())
+        for val in getTransactions()['transactions']:
+        print(formatTransaction(val)+"\n-------------------")
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
         for i in range(len(arr)):
             if(arr[i]['settled'] == ''):
                 print(formatTransaction(arr[i]))
+
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
