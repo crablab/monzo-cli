@@ -24,15 +24,15 @@ def getTransactions():
     return resp
 
 def calcCosts():
-    mIn = 0
-    mOut = 0
+    mIn = 0.0
+    mOut = 0.0
     for val in getTransactions()["transactions"]:
         cValue = val["amount"]
+        total += cValue
         if (cValue < 0):
             mOut += (cValue * -1)
         else:
             mIn += cValue
-
     return("Total In: " + str(mIn) + "\nTotal Out: " + str(mOut) + "\nNet: " + str(mIn - mOut))
 
 def formatTransaction(transaction):
