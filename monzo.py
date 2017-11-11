@@ -23,6 +23,18 @@ def getTransactions():
     resp = call('https://api.monzo.com/transactions', {'account_id': getAccountDetails()[2]})
     return resp
 
+def calcCosts():
+    mIn = 0
+    mOut = 0
+    for val in getTransactions()["transactions"]:
+        cValue = val["amount"]
+        if (cValue < 0):
+            mOut += (cValue * -1)
+        else:
+            mIn += cValue
+
+    return("Total In: " + str(mIn) + "\nTotal Out: " + str(mOut) + "\nNet: " + str(mIn - mOut))
+
 def formatTransaction(transaction):
     return ("Description: " + transaction['description']
             +"\nAmount: " + babel.numbers.format_currency(decimal.Decimal(transaction['amount']/100), 'GBP')
@@ -34,7 +46,6 @@ def formatTransaction(transaction):
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
         acc = getAccountDetails()
-
         print("Account Holder: " + acc[3] + "\nAccount number: " + acc[0] + "\nSort code: " + acc[1]  + "\nBIC number: MONZGB21" + "\nBank address: 230 City Road, London EC1V 2QY")
     elif(sys.argv[1] == "balance"):
         bal = getBalance()
@@ -42,11 +53,13 @@ if(len(sys.argv) > 1):
     elif(sys.argv[1] == "transactions"):
         for val in getTransactions()['transactions']:
             print(formatTransaction(val)+"\n-------------------")
+    elif(sys.argv[1] == "spent"):
+        print(calcCosts())
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
         for i in range(len(arr)):
-            if(arr[i]['settled'] == '' and arr[i]['notes'] != ''):
-                print(formatTransaction(arr[i])+"\n-------------------")
+            if(arr[i]['settled'] == ''):
+                print(formatTransaction(arr[i]))
 
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
