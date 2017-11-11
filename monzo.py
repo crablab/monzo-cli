@@ -23,6 +23,7 @@ def getTransactions():
     resp = call('https://api.monzo.com/transactions', {'account_id': getAccountDetails()[2]})
     return resp
 
+<<<<<<< HEAD
 def calcCosts():
     mIn = 0
     mOut = 0
@@ -34,6 +35,15 @@ def calcCosts():
             mIn += cValue
 
     return("Total In: " + str(mIn) + "\nTotal Out: " + str(mOut) + "\nNet: " + str(mIn - mOut))
+=======
+def formatTransaction(transaction):
+    return ("Description: " + transaction['description']
+            +"\nAmount: " + babel.numbers.format_currency(decimal.Decimal(transaction['amount']/100), 'GBP')
+            +"\nDate: " + transaction['created']
+            +"\nCurrency: " + transaction['currency']
+            +"\nTransaction ID: " + transaction['id']
+            +"\nNotes: " + transaction['notes'])
+>>>>>>> 2b173685d8ec03142fc98aec75f135b5f9dbd5b0
 
 if(len(sys.argv) > 1):
     if(sys.argv[1] == "details"):
@@ -44,12 +54,22 @@ if(len(sys.argv) > 1):
         bal = getBalance()
         print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
     elif(sys.argv[1] == "transactions"):
+<<<<<<< HEAD
         print(getTransactions())
 
     elif(sys.argv[1] == "spent"):
         print(calcCosts())
 
 
+=======
+        for val in getTransactions()['transactions']:
+        print(formatTransaction(val)+"\n-------------------")
+    elif(sys.argv[1] == "pending"):
+        arr = getTransactions()['transactions']
+        for i in range(len(arr)):
+            if(arr[i]['settled'] == ''):
+                print(formatTransaction(arr[i]))
+>>>>>>> 2b173685d8ec03142fc98aec75f135b5f9dbd5b0
 
 else:
     print("Command not found. \n \nTry: \ndetails: list your account details\nbalance: list your balance")
