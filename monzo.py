@@ -63,13 +63,16 @@ def filterTransaction(pendingBool):
 
 def filterDateTransaction(start, end):
     arr = getTransactions()["transactions"]
+    trans_arr = []
     for val in arr:
         parsed1 = dateutil.parser.parse(start)
         parsed2 = dateutil.parser.parse(end).replace(tzinfo=None)
         input_parsed = dateutil.parser.parse(val['created']).replace(tzinfo=None)
 
-        if parsed1 <= input_parsed  <= parsed2: 
+        if parsed1 <= input_parsed  <= parsed2:
+            trans_arr.append(val)
             print(formatTransaction(val)+"\n-------------------")
+    print(calcCosts(trans_arr))
 
 def feedItem(title, body, image):
     params = urllib.urlencode({"account_id": getAccountDetails()[2], "type": "basic", "params[title]": title, "params[body]": body, "params[image_url]": image})
