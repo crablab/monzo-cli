@@ -8,7 +8,7 @@ import decimal
 import dateutil.parser
 import datetime
 
-key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Im9hdXRoY2xpZW50XzAwMDA5NFB2SU5ER3pUM2s2dHo4anAiLCJleHAiOjE1MTA0OTcyOTUsImlhdCI6MTUxMDQ3NTY5NSwianRpIjoidG9rXzAwMDA5UVRVUmpLTEVwejZucWlpZFYiLCJ1aSI6InVzZXJfMDAwMDk4YjlMc3R0TTRpMnVBODFiZCIsInYiOiIyIn0.BWIrY2Pp9W8sDbJ7trjZUJA-hwPnhO3G1i7l3l3evAs"
+key = "{key goes here}"
 headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8', 'Authorization': 'Bearer ' + key}
 
 
