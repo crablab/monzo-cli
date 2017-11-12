@@ -29,10 +29,10 @@ def getTransactions():
     resp = call('https://api.monzo.com/transactions', {'account_id': getAccountDetails()[2]})
     return resp
 
-def calcCosts():
+def calcCosts(transArray):
     mIn = 0.0
     mOut = 0.0
-    for val in getTransactions()["transactions"]:
+    for val in transArray:
         if "decline_reason" not in val:
             current = val["amount"]
             if current < 0: mOut -= current
@@ -105,7 +105,7 @@ if(len(sys.argv) > 1):
             for val in getTransactions()['transactions']:
                 print(formatTransaction(val)+"\n-------------------")
     elif(sys.argv[1] == "spent"):
-        print(calcCosts())
+        print(calcCosts(getTransactions()["transactions"]))
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
         if(len(sys.argv) ==3):
