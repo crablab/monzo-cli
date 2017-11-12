@@ -38,7 +38,7 @@ def calcCosts():
             if current < 0: mOut -= current
             else: mIn += current
 
-    return("Total In: " + str(mIn / 100) + "\nTotal Out: " + str(mOut / 100) + "\nNet: " + str((mIn - mOut) / 100))
+    return("Total In: " + babel.numbers.format_currency(decimal.Decimal(str(mIn / 100)), 'GBP') + "\nTotal Out: " + babel.numbers.format_currency(decimal.Decimal(str(mOut / 100)), 'GBP') + "\nNet: " + babel.numbers.format_currency(decimal.Decimal(str((mIn-mOut) / 100)), 'GBP'))
 
 def formatTransaction(transaction):
     return (("Description: " + transaction['description']
