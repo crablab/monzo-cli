@@ -32,17 +32,17 @@ def calcCosts(transArray):
     mIn = 0.0
     mOut = 0.0
     for val in transArray:
-        #disregard declined transactions
+        # disregard declined transactions
         if "decline_reason" not in val:
             current = val["amount"]
-            #inputs are positive, outputs are negative
+            # inputs are positive, outputs are negative
             if current < 0: mOut -= current
             else: mIn += current
 
     return("Total In: " + babel.numbers.format_currency(decimal.Decimal(str(mIn / 100)), 'GBP') + "\nTotal Out: " + babel.numbers.format_currency(decimal.Decimal(str(mOut / 100)), 'GBP') + "\nNet: " + babel.numbers.format_currency(decimal.Decimal(str((mIn-mOut) / 100)), 'GBP'))
 
 def formatTransaction(transaction):
-    #format the output
+    # format the output
     return (("Description: " + transaction['description']
             +"\nAmount: " + babel.numbers.format_currency(decimal.Decimal(float(transaction['amount'])/100), 'GBP')
             +"\nDate: " + transaction['created']
@@ -53,14 +53,14 @@ def formatTransaction(transaction):
 def filterTransaction(pendingBool):
     arr = getTransactions()["transactions"]
     trans_arr = []
-    #categories
+    # categories
     categories = ['general', 'eating_out', 'expenses', 'transport', 'cash', 'bills', 'entertainment', 'shopping', 'holidays', 'groceries']
     categoriesShort = ['ge', 'eo', 'ex', 't', 'c', 'b', 'en', 's', 'h', 'gr']
-    #for every element, check it against every category
+    # for every element, check it against every category
     for currentTransaction in range(len(arr)):
             for i in range(len(categories)):
                 if(arr[currentTransaction]['category'] == categories[i] and (sys.argv[2] == categories[i] or sys.argv[2]== categoriesShort[i])):
-                    #only look at non settled payments
+                    # only look at non settled payments
                     if(pendingBool):
                         if(arr[currentTransaction]['settled'] == '' and arr[currentTransaction]['notes'] != 'Active card check'):
                             print(formatTransaction(arr[currentTransaction])+"\n-------------------")
@@ -68,11 +68,11 @@ def filterTransaction(pendingBool):
                     else:
                         print(formatTransaction(arr[currentTransaction]) + "\n-------------------")
                         trans_arr.append(arr[currentTransaction])
-    #calculate the input/ouput and print
+    # calculate the input/ouput and print
     print(calcCosts(trans_arr))
 
 def filterDateTransaction(start, end):
-    #filter by date
+    # filter by date
     arr = getTransactions()["transactions"]
     trans_arr = []
     for val in arr:
@@ -90,7 +90,7 @@ def feedItem(title, body, image):
 
     url = "https://api.monzo.com/feed"
 
-    #Special headers for form encoding
+    # Special headers for form encoding
     header = {
     'authorization': "Bearer " + key,
     'content-type': "application/x-www-form-urlencoded",
@@ -101,10 +101,9 @@ def feedItem(title, body, image):
     response = requests.request("POST", url, data=params, headers=header)
 
     print(response.text)
-    #print(r.request.data)
-    return response.content;
+    return response.content
 def help():
-    #print the help
+    # print the help
     print("Command not found. \n \nTry: \ndetails: list your account details"+
         "\nbalance: list your balance"+
         "\ntransactions (\x1B[3moptional\x1B[0m category): list all transactions"+
@@ -114,25 +113,25 @@ def help():
 
 # Argument logic
 if(len(sys.argv) > 1):
-    #details
+    # details
     if(sys.argv[1] == "details"):
         acc = getAccountDetails()
         print("Account Holder: " + acc[3] + "\nAccount number: " + acc[0] + "\nSort code: " + acc[1]  + "\nBIC number: MONZGB21" + "\nBank address: 230 City Road, London EC1V 2QY")
-    #balance
+    # balance
     elif(sys.argv[1] == "balance"):
         bal = getBalance()
         print("Balance: " + babel.numbers.format_currency(decimal.Decimal(bal[1]), 'GBP') + "\nSpent today: " + babel.numbers.format_currency(decimal.Decimal(bal[0]), 'GBP'))
-    #transactions
+    # transactions
     elif(sys.argv[1] == "transactions"):
         if(len(sys.argv) == 3):
             filterTransaction(False)
         else:
             for val in getTransactions()['transactions']:
                 print(formatTransaction(val)+"\n-------------------")
-    #amount spent
+    # amount spent
     elif(sys.argv[1] == "spent"):
         print(calcCosts(getTransactions()["transactions"]))
-    #non settled payments
+    # non settled payments
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
         if(len(sys.argv) ==3):
@@ -141,19 +140,19 @@ if(len(sys.argv) > 1):
             for i in range(len(arr)):
                     if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
                         print(formatTransaction(arr[i])+"\n-------------------")
-    #filter by date
+    # filter by date
     elif(sys.argv[1] == "transaction_filter"):
         if(len(sys.argv) == 4):
             filterDateTransaction(sys.argv[2], sys.argv[3])
         else:
             print("Error: missing param")
-    #feed item
+    # feed item
     elif(sys.argv[1] == "feed_item"):
         if(len(sys.argv) == 5):
             feedItem(sys.argv[2], sys.argv[3], sys.argv[4])
         else:
             print("Error: missing param")
-    #Dinosaur challenge
+    # Dinosaur challenge
     elif(sys.argv[1] == "dino"):
         feedItem("Dinosaur Challenge", "Steve is badass", "http://www.animateit.net/data/media/nov2011/f44ocl.gif")
 
