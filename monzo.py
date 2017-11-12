@@ -27,12 +27,12 @@ def calcCosts():
     mIn = 0.0
     mOut = 0.0
     for val in getTransactions()["transactions"]:
-        cValue = val["amount"]
-        if (cValue < 0):
-            mOut += (cValue * -1)
-        else:
-            mIn += cValue
-    return("Total In: " + str(mIn) + "\nTotal Out: " + str(mOut) + "\nNet: " + str(mIn - mOut))
+        if "decline_reason" not in val:
+            current = val["amount"]
+            if current < 0: mOut -= current
+            else: mIn += current
+
+    return("Total In: " + str(mIn / 100) + "\nTotal Out: " + str(mOut / 100) + "\nNet: " + str((mIn - mOut) / 100))
 
 def formatTransaction(transaction):
     return ("Description: " + transaction['description']
@@ -75,6 +75,7 @@ if(len(sys.argv) > 1):
         arr = getTransactions()['transactions']
         if(len(sys.argv) ==3):
             filterTransaction(True)
+
         else:
             for i in range(len(arr)):
                     if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
