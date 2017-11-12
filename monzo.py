@@ -50,6 +50,7 @@ def formatTransaction(transaction):
 
 def filterTransaction(pendingBool):
     arr = getTransactions()["transactions"]
+    trans_arr = []
     categories = ['general', 'eating_out', 'expenses', 'transport', 'cash', 'bills', 'entertainment', 'shopping', 'holidays', 'groceries']
     categoriesShort = ['ge', 'eo', 'ex', 't', 'c', 'b', 'en', 's', 'h', 'gr']
     for currentTransaction in range(len(arr)):
@@ -58,8 +59,11 @@ def filterTransaction(pendingBool):
                     if(pendingBool):
                         if(arr[currentTransaction]['settled'] == '' and arr[currentTransaction]['notes'] != 'Active card check'):
                             print(formatTransaction(arr[currentTransaction])+"\n-------------------")
+                            trans_arr.append(arr[currentTransaction])
                     else:
                         print(formatTransaction(arr[currentTransaction]) + "\n-------------------")
+                        trans_arr.append(arr[currentTransaction])
+    print(calcCosts(trans_arr))
 
 def filterDateTransaction(start, end):
     arr = getTransactions()["transactions"]
