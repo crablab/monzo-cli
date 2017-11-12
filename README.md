@@ -2,12 +2,12 @@
 
 A terminal client for the Monzo Bank API - developers.monzo.com
 
-#Installation
-##Required Packages
+## Installation
+### Required Packages
  - Python 2.7.x
  - python-pip
  
- ###python packages
+ #### python packages
 - requests
 - json
 - urllib
@@ -18,7 +18,7 @@ A terminal client for the Monzo Bank API - developers.monzo.com
 - dateutil.parser
 - datetime
 
-##Instructions
+### Instructions
 1. Clone/Download the repository 
 2. Install the required dependancies 
 3. At the top of your file, add the access token aquired from developers.monzo.com
@@ -26,7 +26,7 @@ A terminal client for the Monzo Bank API - developers.monzo.com
 
 To run the script: `./monzo {commands}`
 
-##Commands
+### Commands
 
 `details ()`: outputs your account details
 `balance ()`: outputs todays spend and balance
@@ -36,6 +36,6 @@ To run the script: `./monzo {commands}`
 `spent ()`: outputs total cashflow
 `feed_item (title, description, image_url)`: generates a feed item
 
-#Upgrades
+## Upgrades
 - Full oAuth2 support 
 - Better handling of parameters (ie. composite commands) 
