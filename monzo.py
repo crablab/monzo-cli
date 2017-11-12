@@ -23,7 +23,7 @@ def getAccountDetails():
 
 def getBalance():
     resp = call('https://api.monzo.com/balance', {'account_id': getAccountDetails()[2]})
-    return [(-1 * resp['spend_today']/100), resp['balance']/100]
+    return [(-1 * float(resp['spend_today'])/100), float(resp['balance'])/100]
 
 def getTransactions():
     resp = call('https://api.monzo.com/transactions', {'account_id': getAccountDetails()[2]})
@@ -42,7 +42,7 @@ def calcCosts():
 
 def formatTransaction(transaction):
     return (("Description: " + transaction['description']
-            +"\nAmount: " + babel.numbers.format_currency(decimal.Decimal(transaction['amount']/100), 'GBP')
+            +"\nAmount: " + babel.numbers.format_currency(decimal.Decimal(float(transaction['amount'])/100), 'GBP')
             +"\nDate: " + transaction['created']
             +"\nCurrency: " + transaction['currency']
             +"\nTransaction ID: " + transaction['id']
