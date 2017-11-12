@@ -5,9 +5,13 @@ import sys
 import locale
 import babel.numbers
 import decimal
+import dateutil.parser
+import datetime
+
+headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Im9hdXRoY2xpZW50XzAwMDA5NFB2SU5ER3pUM2s2dHo4anAiLCJleHAiOjE1MTA0NzQ4MzMsImlhdCI6MTUxMDQ1MzIzMywianRpIjoidG9rXzAwMDA5UVN4MkhrekpGU0I4RklINmYiLCJ1aSI6InVzZXJfMDAwMDk4YjlMc3R0TTRpMnVBODFiZCIsInYiOiIyIn0.yxBoa-gTfpyHsuLNyJO9tUpX_rdTgW-NmRURDGO6hJk'}
+
 
 def call(url, payload):
-    headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Im9hdXRoY2xpZW50XzAwMDA5NFB2SU5ER3pUM2s2dHo4anAiLCJleHAiOjE1MTA0NTE3NjAsImlhdCI6MTUxMDQzMDE2MCwianRpIjoidG9rXzAwMDA5UVNPaVZBNk1iQnV1VmFKbDMiLCJ1aSI6InVzZXJfMDAwMDk4YjlMc3R0TTRpMnVBODFiZCIsInYiOiIyIn0.Iw8F8eXnfb0v9ac6co7_rSa44i4T3H3GDylgAqGIy7M'}
     r = requests.get(url, params=urllib.urlencode(payload, doseq = True), headers=headers)
     return r.json()
 
@@ -55,6 +59,21 @@ def filterTransaction(pendingBool):
                     else:
                         print(formatTransaction(arr[currentTransaction]) + "\n-------------------")
 
+def filterDateTransaction(start, end):
+    arr = getTransactions()["transactions"]
+    for val in arr:
+        parsed1 = dateutil.parser.parse(start)
+        parsed2 = dateutil.parser.parse(end).replace(tzinfo=None)
+        input_parsed = dateutil.parser.parse(val['created']).replace(tzinfo=None)
+
+        if parsed1 <= input_parsed  <= parsed2: 
+            print(formatTransaction(val)+"\n-------------------")
+
+def feedItem(title, body, image):
+    #NOT POSSIBEL TO URLENCODE 2D IN PYTHON
+    r = requests.post("https://api.monzo.com/feed", params=urllib.urlencode({"account_id": getAccountDetails()[2], "type": "basic","params": {"title": "test", "body": body, "image_url": image}},doseq = True), headers=headers)
+    #print(r.request.form)
+    return r.content;
 
 # Argument logic
 if(len(sys.argv) > 1):
@@ -81,9 +100,21 @@ if(len(sys.argv) > 1):
             for i in range(len(arr)):
                     if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
                         print(formatTransaction(arr[i])+"\n-------------------")
+    elif(sys.argv[1] == "transaction_filter"):
+        if(len(sys.argv) == 4):
+            filterDateTransaction(sys.argv[2], sys.argv[3])
+        else:
+            print("Error: missing param")
+    elif(sys.argv[1] == "feed_item"):
+        if(len(sys.argv) == 5):
+            #feedItem(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
+            print(feedItem("Test thing", "more test thing", "http://www.nyan.cat/cats/original.gif"))
+        else:
+            print("Error: missing param")    
 
     else:
         print("Command not found. \n \nTry: \ndetails: list your account details"+
         "\nbalance: list your balance\ntransactions: list all transactions"+
         "\nspent: display total input and output"+
-        "\npending: show all transactions that have not been settled")
+        "\npending: show all transactions that have not been settled"+
+        "\nTransaction_filter (start date, end date): filter transaction by date range")
