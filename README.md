@@ -32,7 +32,7 @@ To run the script: `./monzo {commands}`
 
 `balance ()`: outputs todays spend and balance 
 
-`transactions (<i>optional</i> catagory)`: outputs all transactions, optionally filtered by catagory 
+`transactions (_optional_ catagory)`: outputs all transactions, optionally filtered by catagory 
 
 `transaction_filter (start_date, end date)`: outputs all transactions within the specified period 
 
