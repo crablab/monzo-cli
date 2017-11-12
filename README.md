@@ -28,13 +28,13 @@ To run the script: `./monzo {commands}`
 
 ### Commands
 
-`details ()`: outputs your account details
-`balance ()`: outputs todays spend and balance
-`transactions (<i>optional</i> catagory)`: outputs all transactions, optionally filtered by catagory
-`transaction_filter (start_date, end date)`: outputs all transactions within the specified period
-`pending ()`: outputs authorised but not presented transactions
-`spent ()`: outputs total cashflow
-`feed_item (title, description, image_url)`: generates a feed item
+`details ()`: outputs your account details \n
+`balance ()`: outputs todays spend and balance \n
+`transactions (<i>optional</i> catagory)`: outputs all transactions, optionally filtered by catagory \n
+`transaction_filter (start_date, end date)`: outputs all transactions within the specified period \n
+`pending ()`: outputs authorised but not presented transactions \n
+`spent ()`: outputs total cashflow \n
+`feed_item (title, description, image_url)`: generates a feed item \n
 
 ## Upgrades
 - Full oAuth2 support 
