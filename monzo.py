@@ -92,6 +92,13 @@ def feedItem(title, body, image):
     print(response.text)
     #print(r.request.data)
     return response.content;
+def help():
+    print("Command not found. \n \nTry: \ndetails: list your account details"+
+        "\nbalance: list your balance"+
+        "\ntransactions (\x1B[3moptional\x1B[0m category): list all transactions"+
+        "\nspent: display total input and output"+
+        "\npending: show all transactions that have not been settled"+
+        "\ntransaction_filter (start date, end date): filter transaction by date range")
 
 # Argument logic
 if(len(sys.argv) > 1):
@@ -130,8 +137,6 @@ if(len(sys.argv) > 1):
             print("Error: missing param")    
 
     else:
-        print("Command not found. \n \nTry: \ndetails: list your account details"+
-        "\nbalance: list your balance\ntransactions: list all transactions"+
-        "\nspent: display total input and output"+
-        "\npending: show all transactions that have not been settled"+
-        "\nTransaction_filter (start date, end date): filter transaction by date range")
+        help()
+else:
+    help()
