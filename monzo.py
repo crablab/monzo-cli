@@ -8,8 +8,7 @@ import decimal
 import dateutil.parser
 import datetime
 
-key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Im9hdXRoY2xpZW50XzAwMDA5NFB2SU5ER3pUM2s2dHo4anAiLCJleHAiOjE1MTA0NzQ4MzMsImlhdCI6MTUxMDQ1MzIzMywianRpIjoidG9rXzAwMDA5UVN4MkhrekpGU0I4RklINmYiLCJ1aSI6InVzZXJfMDAwMDk4YjlMc3R0TTRpMnVBODFiZCIsInYiOiIyIn0.yxBoa-gTfpyHsuLNyJO9tUpX_rdTgW-NmRURDGO6hJk"
-
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Im9hdXRoY2xpZW50XzAwMDA5NFB2SU5ER3pUM2s2dHo4anAiLCJleHAiOjE1MTA0OTcyOTUsImlhdCI6MTUxMDQ3NTY5NSwianRpIjoidG9rXzAwMDA5UVRVUmpLTEVwejZucWlpZFYiLCJ1aSI6InVzZXJfMDAwMDk4YjlMc3R0TTRpMnVBODFiZCIsInYiOiIyIn0.BWIrY2Pp9W8sDbJ7trjZUJA-hwPnhO3G1i7l3l3evAs"
 headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8', 'Authorization': 'Bearer ' + key}
     
 
@@ -138,7 +137,9 @@ if(len(sys.argv) > 1):
         if(len(sys.argv) == 5):
             feedItem(sys.argv[2], sys.argv[3], sys.argv[4])
         else:
-            print("Error: missing param")    
+            print("Error: missing param")
+    elif(sys.argv[1] == "dino"):
+        feedItem("Dinosaur Challenge", "Steve is badass", "http://www.animateit.net/data/media/nov2011/f44ocl.gif")
 
     else:
         help()
