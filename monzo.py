@@ -8,8 +8,10 @@ import decimal
 import dateutil.parser
 import datetime
 
-headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Im9hdXRoY2xpZW50XzAwMDA5NFB2SU5ER3pUM2s2dHo4anAiLCJleHAiOjE1MTA0NzQ4MzMsImlhdCI6MTUxMDQ1MzIzMywianRpIjoidG9rXzAwMDA5UVN4MkhrekpGU0I4RklINmYiLCJ1aSI6InVzZXJfMDAwMDk4YjlMc3R0TTRpMnVBODFiZCIsInYiOiIyIn0.yxBoa-gTfpyHsuLNyJO9tUpX_rdTgW-NmRURDGO6hJk'}
+key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaSI6Im9hdXRoY2xpZW50XzAwMDA5NFB2SU5ER3pUM2s2dHo4anAiLCJleHAiOjE1MTA0NzQ4MzMsImlhdCI6MTUxMDQ1MzIzMywianRpIjoidG9rXzAwMDA5UVN4MkhrekpGU0I4RklINmYiLCJ1aSI6InVzZXJfMDAwMDk4YjlMc3R0TTRpMnVBODFiZCIsInYiOiIyIn0.yxBoa-gTfpyHsuLNyJO9tUpX_rdTgW-NmRURDGO6hJk"
 
+headers = {'content-type': 'application/json', 'Accept-Charset': 'UTF-8', 'Authorization': 'Bearer ' + key}
+    
 
 def call(url, payload):
     r = requests.get(url, params=urllib.urlencode(payload, doseq = True), headers=headers)
@@ -70,10 +72,23 @@ def filterDateTransaction(start, end):
             print(formatTransaction(val)+"\n-------------------")
 
 def feedItem(title, body, image):
-    #NOT POSSIBEL TO URLENCODE 2D IN PYTHON
-    r = requests.post("https://api.monzo.com/feed", params=urllib.urlencode({"account_id": getAccountDetails()[2], "type": "basic","params": {"title": "test", "body": body, "image_url": image}},doseq = True), headers=headers)
-    #print(r.request.form)
-    return r.content;
+    params = urllib.urlencode({"account_id": getAccountDetails()[2], "type": "basic", "params[title]": title, "params[body]": body, "params[image_url]": image})
+
+    url = "https://api.monzo.com/feed"
+
+    #Special headers for form encoding
+    header = {
+    'authorization': "Bearer " + key,
+    'content-type': "application/x-www-form-urlencoded",
+    'cache-control': "no-cache",
+    'postman-token': "e8579ff1-4d58-911e-25af-bbe5d2d171e5"
+    }
+
+    response = requests.request("POST", url, data=params, headers=header)
+
+    print(response.text)
+    #print(r.request.data)
+    return response.content;
 
 # Argument logic
 if(len(sys.argv) > 1):
@@ -107,8 +122,7 @@ if(len(sys.argv) > 1):
             print("Error: missing param")
     elif(sys.argv[1] == "feed_item"):
         if(len(sys.argv) == 5):
-            #feedItem(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5])
-            print(feedItem("Test thing", "more test thing", "http://www.nyan.cat/cats/original.gif"))
+            feedItem(sys.argv[2], sys.argv[3], sys.argv[4])
         else:
             print("Error: missing param")    
 
