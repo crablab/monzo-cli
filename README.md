@@ -34,7 +34,7 @@ To run the script: `./monzo {commands}`
 
 `transactions (*optional* catagory)`: outputs all transactions, optionally filtered by catagory 
 
-`transaction_filter (start_date, end date)`: outputs all transactions within the specified period 
+`transaction_filter (start_date, end date, *optional*  catagory)`: outputs all transactions within the specified period and optionally by catagory
 
 `pending ()`: outputs authorised but not presented transactions 
 
