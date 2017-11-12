@@ -50,8 +50,7 @@ def formatTransaction(transaction):
             +"\nTransaction ID: " + transaction['id']
             +"\nNotes: " + transaction['notes'])).encode('utf-8')
 
-def filterTransaction(pendingBool):
-    arr = getTransactions()["transactions"]
+def filterTransaction(pendingBool, argVal, arr):
     trans_arr = []
     # categories
     categories = ['general', 'eating_out', 'expenses', 'transport', 'cash', 'bills', 'entertainment', 'shopping', 'holidays', 'groceries']
@@ -59,7 +58,7 @@ def filterTransaction(pendingBool):
     # for every element, check it against every category
     for currentTransaction in range(len(arr)):
             for i in range(len(categories)):
-                if(arr[currentTransaction]['category'] == categories[i] and (sys.argv[2] == categories[i] or sys.argv[2]== categoriesShort[i])):
+                if(arr[currentTransaction]['category'] == categories[i] and (sys.argv[argVal] == categories[i] or sys.argv[argVal]== categoriesShort[i])):
                     # only look at non settled payments
                     if(pendingBool):
                         if(arr[currentTransaction]['settled'] == '' and arr[currentTransaction]['notes'] != 'Active card check'):
@@ -82,8 +81,12 @@ def filterDateTransaction(start, end):
 
         if parsed1 <= input_parsed  <= parsed2:
             trans_arr.append(val)
-            print(formatTransaction(val)+"\n-------------------")
-    print(calcCosts(trans_arr))
+            if(len(sys.argv) != 5):
+                print(formatTransaction(val)+"\n-------------------")
+    if(len(sys.argv) == 5):
+        filterTransaction(False,4,trans_arr)
+    else:
+        print(calcCosts(trans_arr))
 
 def feedItem(title, body, image):
     params = urllib.urlencode({"account_id": getAccountDetails()[2], "type": "basic", "params[title]": title, "params[body]": body, "params[image_url]": image})
@@ -99,7 +102,6 @@ def feedItem(title, body, image):
     }
 
     response = requests.request("POST", url, data=params, headers=header)
-
     print(response.text)
     return response.content
 def help():
@@ -124,7 +126,7 @@ if(len(sys.argv) > 1):
     # transactions
     elif(sys.argv[1] == "transactions"):
         if(len(sys.argv) == 3):
-            filterTransaction(False)
+            filterTransaction(False,2,(getTransactions()["transactions"]))
         else:
             for val in getTransactions()['transactions']:
                 print(formatTransaction(val)+"\n-------------------")
@@ -135,14 +137,14 @@ if(len(sys.argv) > 1):
     elif(sys.argv[1] == "pending"):
         arr = getTransactions()['transactions']
         if(len(sys.argv) ==3):
-            filterTransaction(True)
+            filterTransaction(True,2,(getTransactions()["transactions"]))
         else:
             for i in range(len(arr)):
                     if(arr[i]['settled'] == '' and arr[i]['notes'] != 'Active card check'):
                         print(formatTransaction(arr[i])+"\n-------------------")
     # filter by date
     elif(sys.argv[1] == "transaction_filter"):
-        if(len(sys.argv) == 4):
+        if(len(sys.argv) >= 4):
             filterDateTransaction(sys.argv[2], sys.argv[3])
         else:
             print("Error: missing param")
